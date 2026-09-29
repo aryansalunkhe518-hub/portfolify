@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#6d28d9">
+
+    <title>
+        {% if portfolio %}Edit Portfolio{% else %}Create Portfolio{% endif %}
+        - Portfolify
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='site44.css') }}">
+</head>
+
+
+<body>
+
+<!-- =====================================================
+     NAVBAR
+     ===================================================== -->
+
+<header class="navbar">
+
+    <div class="container navbar-inner">
+
+        <a href="{{ url_for('index') }}"
+           class="brand">
+            Portfolify
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="{{ url_for('dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('account') }}">
+                Account
+            </a>
+
+            <a href="{{ url_for('logout') }}">
+                Logout
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+     ===================================================== -->
+
+<main class="create-page">
+
+    <div class="container">
+
+
+        <!-- HEADER -->
+
+        <section class="create-header">
+
+            <div>
+
+                <span class="hero-badge">
+                    ✦ Portfolio Builder
+                </span>
+
+                <h1>
+                    {% if portfolio %}
+                        Edit your portfolio
+                    {% else %}
+                        Create your portfolio
+                    {% endif %}
+                </h1>
+
+                <p>
+                    Add your details, choose a design and
+                    create your professional online profile.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- FLASH MESSAGES -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="flash {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- =================================================
+             FORM
+             ================================================= -->
+
+        <form
+            method="POST"
+            action="{{ url_for('create') }}"
+            enctype="multipart/form-data"
+            id="portfolioForm">
+
+
+            <div class="create-layout">
+
+
+                <!-- =================================================
+                     LEFT SIDE
+                     ================================================= -->
+
+                <div class="create-main">
+
+
+                    <!-- PERSONAL INFORMATION -->
+
+                    <section class="form-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="card-kicker">
+                                    STEP 1
+                                </span>
+
+                                <h2>
+                                    Personal Information
+                                </h2>
+
+                            </div>
+
+                            <span class="card-icon">
+                                👤
+                            </span>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group">
+
+                                <label for="name">
+                                    Full Name *
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value="{{ portfolio.name if portfolio else '' }}"
+                                    placeholder="Your full name"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="title">
+                                    Professional Title *
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="title"
+                                    name="title"
+                                    value="{{ portfolio.title if portfolio else '' }}"
+                                    placeholder="e.g. Web Developer"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group full-width">
+
+                                <label for="about">
+                                    About Me
+                                </label>
+
+                                <textarea
+                                    id="about"
+                                    name="about"
+                                    rows="5"
+                                    placeholder="Write a short introduction about yourself..."
+                                >{{ portfolio.about if portfolio else '' }}</textarea>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- EDUCATION & EXPERIENCE -->
+
+                    <section class="form-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="card-kicker">
+                                    STEP 2
+                                </span>
+
+                                <h2>
+                                    Education & Experience
+                                </h2>
+
+                            </div>
+
+                            <span class="card-icon">
+                                🎓
+                            </span>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+                            <div class="form-group full-width">
+
+                                <label for="education">
+                                    Education
+                                </label>
+
+                                <textarea
+                                    id="education"
+                                    name="education"
+                                    rows="5"
+                                    placeholder="Example: Diploma in Computer Engineering - Government Polytechnic..."
+                                >{{ portfolio.education if portfolio else '' }}</textarea>
+
+                            </div>
+
+
+                            <div class="form-group full-width">
+
+                                <label for="experience">
+                                    Experience
+                                </label>
+
+                                <textarea
+                                    id="experience"
+                                    name="experience"
+                                    rows="5"
+                                    placeholder="Describe internships, jobs, freelance work or other experience..."
+                                >{{ portfolio.experience if portfolio else '' }}</textarea>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- SKILLS & PROJECTS -->
+
+                    <section class="form-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="card-kicker">
+                                    STEP 3
+                                </span>
+
+                                <h2>
+                                    Skills & Projects
+                                </h2>
+
+                            </div>
+
+                            <span class="card-icon">
+                                🚀
+                            </span>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label for="skills">
+                                    Skills
+                                </label>
+
+                                <textarea
+                                    id="skills"
+                                    name="skills"
+                                    rows="6"
+                                    placeholder="HTML, CSS, JavaScript, Python, Flask..."
+                                >{{ portfolio.skills if portfolio else '' }}</textarea>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="projects">
+                                    Projects
+                                </label>
+
+                                <textarea
+                                    id="projects"
+                                    name="projects"
+                                    rows="6"
+                                    placeholder="Mention your important projects..."
+                                >{{ portfolio.projects if portfolio else '' }}</textarea>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- CONTACT -->
+
+                    <section class="form-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="card-kicker">
+                                    STEP 4
+                                </span>
+
+                                <h2>
+                                    Contact & Social Links
+                                </h2>
+
+                            </div>
+
+                            <span class="card-icon">
+                                🔗
+                            </span>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group">
+
+                                <label for="email">
+                                    Contact Email
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value="{{ portfolio.email if portfolio else user.email }}"
+                                    placeholder="you@example.com"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="github">
+                                    GitHub URL
+                                </label>
+
+                                <input
+                                    type="url"
+                                    id="github"
+                                    name="github"
+                                    value="{{ portfolio.github if portfolio else '' }}"
+                                    placeholder="https://github.com/username"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group full-width">
+
+                                <label for="linkedin">
+                                    LinkedIn URL
+                                </label>
+
+                                <input
+                                    type="url"
+                                    id="linkedin"
+                                    name="linkedin"
+                                    value="{{ portfolio.linkedin if portfolio else '' }}"
+                                    placeholder="https://linkedin.com/in/username"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- UPLOADS -->
+
+                    <section class="form-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="card-kicker">
+                                    STEP 5
+                                </span>
+
+                                <h2>
+                                    Profile Photo & Resume
+                                </h2>
+
+                            </div>
+
+                            <span class="card-icon">
+                                📁
+                            </span>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+
+                            <div class="form-group">
+
+                                <label for="photo">
+                                    Profile Photo
+                                </label>
+
+                                <input
+                                    type="file"
+                                    id="photo"
+                                    name="photo"
+                                    accept=".jpg,.jpeg,.png,.webp"
+                                >
+
+                                <small>
+                                    JPG, JPEG, PNG or WEBP.
+                                    Maximum 8 MB.
+                                </small>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="resume">
+                                    Resume
+                                </label>
+
+                                <input
+                                    type="file"
+                                    id="resume"
+                                    name="resume"
+                                    accept=".pdf,.doc,.docx"
+                                >
+
+                                <small>
+                                    PDF, DOC or DOCX.
+                                    Maximum 8 MB.
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- DESIGN -->
+
+                    <section class="form-card">
+
+                        <div class="card-heading">
+
+                            <div>
+
+                                <span class="card-kicker">
+                                    STEP 6
+                                </span>
+
+                                <h2>
+                                    Customize Your Portfolio
+                                </h2>
+
+                            </div>
+
+                            <span class="card-icon">
+                                🎨
+                            </span>
+
+                        </div>
+
+
+                        <!-- TEMPLATE -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Choose Template
+                            </label>
+
+                            <div class="option-grid">
+
+
+                                {% for item in [
+                                    ('professional', 'Professional', 'Clean & corporate'),
+                                    ('modern', 'Modern', 'Fresh & stylish'),
+                                    ('developer', 'Developer', 'Code focused'),
+                                    ('minimal', 'Minimal', 'Simple & clean'),
+                                    ('creative', 'Creative', 'Colorful & unique'),
+                                    ('dark', 'Dark Tech', 'Modern dark')
+                                ] %}
+
+                                <label class="option-card">
+
+                                    <input
+                                        type="radio"
+                                        name="template"
+                                        value="{{ item[0] }}"
+                                        {% if (portfolio and portfolio.template == item[0]) or (not portfolio and item[0] == 'professional') %}
+                                            checked
+                                        {% endif %}
+                                    >
+
+                                    <span>
+
+                                        <strong>
+                                            {{ item[1] }}
+                                        </strong>
+
+                                        <small>
+                                            {{ item[2] }}
+                                        </small>
+
+                                    </span>
+
+                                </label>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- THEME -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Color Theme
+                            </label>
+
+                            <div class="theme-grid">
+
+
+                                {% for theme in [
+                                    'blue',
+                                    'purple',
+                                    'green',
+                                    'orange',
+                                    'red',
+                                    'dark'
+                                ] %}
+
+                                <label class="theme-option">
+
+                                    <input
+                                        type="radio"
+                                        name="theme"
+                                        value="{{ theme }}"
+                                        {% if (portfolio and portfolio.theme == theme) or (not portfolio and theme == 'purple') %}
+                                            checked
+                                        {% endif %}
+                                    >
+
+                                    <span class="theme-dot theme-{{ theme }}"></span>
+
+                                    <strong>
+                                        {{ theme|title }}
+                                    </strong>
+
+                                </label>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- FONT -->
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label for="font">
+                                    Font Style
+                                </label>
+
+                                <select
+                                    id="font"
+                                    name="font">
+
+                                    {% for font in [
+                                        'modern',
+                                        'classic',
+                                        'clean',
+                                        'typewriter'
+                                    ] %}
+
+                                    <option
+                                        value="{{ font }}"
+                                        {% if (portfolio and portfolio.font == font) or (not portfolio and font == 'modern') %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ font|title }}
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- PHOTO STYLE -->
+
+                            <div class="form-group">
+
+                                <label for="photo_style">
+                                    Photo Style
+                                </label>
+
+                                <select
+                                    id="photo_style"
+                                    name="photo_style">
+
+                                    {% for style in [
+                                        'circle',
+                                        'rounded',
+                                        'square'
+                                    ] %}
+
+                                    <option
+                                        value="{{ style }}"
+                                        {% if (portfolio and portfolio.photo_style == style) or (not portfolio and style == 'circle') %}
+                                            selected
+                                        {% endif %}
+                                    >
+                                        {{ style|title }}
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DECORATION -->
+
+                        <div class="form-group">
+
+                            <label for="decoration">
+                                Decoration Style
+                            </label>
+
+                            <select
+                                id="decoration"
+                                name="decoration">
+
+                                {% for decoration in [
+                                    'sparkle',
+                                    'developer',
+                                    'creative',
+                                    'professional',
+                                    'tech'
+                                ] %}
+
+                                <option
+                                    value="{{ decoration }}"
+                                    {% if (portfolio and portfolio.decoration == decoration) or (not portfolio and decoration == 'sparkle') %}
+                                        selected
+                                    {% endif %}
+                                >
+                                    {{ decoration|title }}
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- SUBMIT -->
+
+                    <div class="form-actions">
+
+                        <a
+                            href="{{ url_for('dashboard') }}"
+                            class="btn btn-secondary">
+
+                            Cancel
+
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
+
+                            {% if portfolio %}
+                                Save Changes
+                            {% else %}
+                                Create Portfolio
+                            {% endif %}
+
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =================================================
+                     RIGHT SIDE PREVIEW
+                     ================================================= -->
+
+                <aside class="create-preview">
+
+                    <div class="preview-sticky">
+
+                        <div class="preview-heading">
+
+                            <span class="section-kicker">
+                                LIVE PREVIEW
+                            </span>
+
+                            <h2>
+                                Your portfolio
+                            </h2>
+
+                        </div>
+
+
+                        <div
+                            class="mini-portfolio"
+                            id="livePreview">
+
+
+                            <div class="mini-decoration">
+                                ✦
+                            </div>
+
+
+                            <div class="mini-avatar"
+                                 id="previewAvatar">
+
+                                {% if portfolio and portfolio.photo %}
+
+                                    <img
+                                        src="{{ url_for(
+                                            'static',
+                                            filename='uploads/' + portfolio.photo
+                                        ) }}"
+                                        alt="Profile"
+                                    >
+
+                                {% else %}
+
+                                    {{ (portfolio.name[0] if portfolio and portfolio.name else 'Y')|upper }}
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <h2 id="previewName">
+
+                                {{ portfolio.name if portfolio and portfolio.name else 'Your Name' }}
+
+                            </h2>
+
+
+                            <p id="previewTitle">
+
+                                {{ portfolio.title if portfolio and portfolio.title else 'Your Professional Title' }}
+
+                            </p>
+
+
+                            <div class="mini-divider"></div>
+
+
+                            <p id="previewAbout">
+
+                                {{ portfolio.about if portfolio and portfolio.about else 'Your short professional introduction will appear here.' }}
+
+                            </p>
+
+
+                            <div class="mini-tags"
+                                 id="previewSkills">
+
+                                {% if portfolio and portfolio.skills %}
+
+                                    {% for skill in portfolio.skills.split(',')[:5] %}
+
+                                        <span>
+                                            {{ skill.strip() }}
+                                        </span>
+
+                                    {% endfor %}
+
+                                {% else %}
+
+                                    <span>HTML</span>
+                                    <span>CSS</span>
+                                    <span>JavaScript</span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="mini-links">
+
+                                <span>
+                                    GitHub
+                                </span>
+
+                                <span>
+                                    LinkedIn
+                                </span>
+
+                                <span>
+                                    Contact
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <p class="preview-note">
+                            This preview gives you a quick idea
+                            of your portfolio. Your selected
+                            template will be applied to the
+                            published version.
+                        </p>
+
+                    </div>
+
+                </aside>
+
+
+            </div>
+
+        </form>
+
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer class="footer">
+
+    <div class="container footer-inner">
+
+        <div>
+
+            <a href="{{ url_for('index') }}"
+               class="brand">
+                Portfolify
+            </a>
+
+            <p>
+                Build. Publish. Share.
+            </p>
+
+        </div>
+
+        <small>
+            © 2026 Portfolify
+        </small>
+
+    </div>
+
+</footer>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

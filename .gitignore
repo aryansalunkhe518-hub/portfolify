@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+
+database.db
+
+.env
+
+static/uploads/*
+static/resumes/*
+static/qr_codes/*
+
+.vscode/
+.DS_Store

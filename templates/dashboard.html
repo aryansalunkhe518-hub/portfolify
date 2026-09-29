@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Manage your Portfolify portfolio.">
+
+    <meta name="theme-color"
+          content="#6d28d9">
+
+    <title>Dashboard - Portfolify</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='site44.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+     ===================================================== -->
+
+<header class="navbar">
+
+    <div class="container navbar-inner">
+
+        <a href="{{ url_for('index') }}"
+           class="brand">
+            Portfolify
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="{{ url_for('dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('account') }}">
+                Account
+            </a>
+
+            <a href="{{ url_for('logout') }}">
+                Logout
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     DASHBOARD
+     ===================================================== -->
+
+<main class="dashboard-page">
+
+    <div class="container">
+
+
+        <!-- FLASH MESSAGES -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="flash {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- =================================================
+             WELCOME
+             ================================================= -->
+
+        <section class="dashboard-header">
+
+            <div>
+
+                <span class="hero-badge">
+                    ✦ Creator Dashboard
+                </span>
+
+                <h1>
+                    Welcome, {{ user.name }}
+                </h1>
+
+                <p>
+                    Create, customize and share your professional
+                    portfolio from one place.
+                </p>
+
+            </div>
+
+
+            <a href="{{ url_for('create') }}"
+               class="btn btn-primary">
+
+                {% if portfolio %}
+                    Edit Portfolio
+                {% else %}
+                    Create Portfolio
+                {% endif %}
+
+            </a>
+
+        </section>
+
+
+        {% if portfolio %}
+
+
+        <!-- =================================================
+             PORTFOLIO OVERVIEW
+             ================================================= -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- PROFILE CARD -->
+
+            <div class="dashboard-card profile-card">
+
+                <div class="profile-avatar">
+
+                    {% if portfolio.photo %}
+
+                        <img
+                            src="{{ url_for('static',
+                               filename='uploads/' + portfolio.photo) }}"
+                            alt="{{ portfolio.name }}"
+                        >
+
+                    {% else %}
+
+                        {{ portfolio.name[0]|upper }}
+
+                    {% endif %}
+
+                </div>
+
+
+                <h2>
+                    {{ portfolio.name }}
+                </h2>
+
+                <p class="muted">
+                    {{ portfolio.title }}
+                </p>
+
+
+                {% if portfolio.published %}
+
+                    <span class="status-badge published">
+                        ● Published
+                    </span>
+
+                {% else %}
+
+                    <span class="status-badge draft">
+                        ● Draft
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- PORTFOLIO DETAILS -->
+
+            <div class="dashboard-card">
+
+                <div class="card-heading">
+
+                    <div>
+                        <span class="card-kicker">
+                            PORTFOLIO
+                        </span>
+
+                        <h2>
+                            Your portfolio
+                        </h2>
+                    </div>
+
+                    <span class="card-icon">
+                        ✦
+                    </span>
+
+                </div>
+
+
+                <div class="detail-list">
+
+                    <div class="detail-row">
+
+                        <span>
+                            Template
+                        </span>
+
+                        <strong>
+                            {{ portfolio.template|title }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span>
+                            Theme
+                        </span>
+
+                        <strong>
+                            {{ portfolio.theme|title }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span>
+                            Font
+                        </span>
+
+                        <strong>
+                            {{ portfolio.font|title }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-row">
+
+                        <span>
+                            Resume
+                        </span>
+
+                        <strong>
+
+                            {% if portfolio.resume %}
+                                Uploaded
+                            {% else %}
+                                Not uploaded
+                            {% endif %}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             MAIN ACTIONS
+             ================================================= -->
+
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-kicker">
+                        QUICK ACTIONS
+                    </span>
+
+                    <h2>
+                        Manage your portfolio
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="action-grid">
+
+
+                <!-- EDIT -->
+
+                <a href="{{ url_for('create') }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+                        ✎
+                    </div>
+
+                    <h3>
+                        Edit Portfolio
+                    </h3>
+
+                    <p>
+                        Update your personal information,
+                        skills, projects and experience.
+                    </p>
+
+                    <span>
+                        Edit →
+                    </span>
+
+                </a>
+
+
+                <!-- PREVIEW -->
+
+                <a href="{{ url_for('portfolio') }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+                        ◉
+                    </div>
+
+                    <h3>
+                        Preview
+                    </h3>
+
+                    <p>
+                        See how your portfolio looks before
+                        sharing it publicly.
+                    </p>
+
+                    <span>
+                        Preview →
+                    </span>
+
+                </a>
+
+
+                <!-- PDF -->
+
+                <a href="{{ url_for('pdf',
+                           portfolio_id=portfolio.id) }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+                        PDF
+                    </div>
+
+                    <h3>
+                        Download PDF
+                    </h3>
+
+                    <p>
+                        Generate a simple PDF version of
+                        your portfolio.
+                    </p>
+
+                    <span>
+                        Download →
+                    </span>
+
+                </a>
+
+
+                <!-- RESUME -->
+
+                {% if portfolio.resume %}
+
+                <a href="{{ url_for('resume',
+                           portfolio_id=portfolio.id) }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+                        CV
+                    </div>
+
+                    <h3>
+                        Resume
+                    </h3>
+
+                    <p>
+                        Open your uploaded resume and
+                        keep it ready for sharing.
+                    </p>
+
+                    <span>
+                        Open →
+                    </span>
+
+                </a>
+
+                {% endif %}
+
+
+                <!-- QR -->
+
+                {% if portfolio.published %}
+
+                <a href="{{ url_for('qr',
+                           portfolio_id=portfolio.id) }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+                        QR
+                    </div>
+
+                    <h3>
+                        QR Code
+                    </h3>
+
+                    <p>
+                        Generate a QR code for your
+                        public portfolio.
+                    </p>
+
+                    <span>
+                        Generate →
+                    </span>
+
+                </a>
+
+                {% endif %}
+
+
+                <!-- ACCOUNT -->
+
+                <a href="{{ url_for('account') }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+                        ⚙
+                    </div>
+
+                    <h3>
+                        Account
+                    </h3>
+
+                    <p>
+                        Manage your account information
+                        and profile details.
+                    </p>
+
+                    <span>
+                        Manage →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PUBLIC PORTFOLIO
+             ================================================= -->
+
+        <section class="dashboard-card public-link-card">
+
+            <div>
+
+                <span class="section-kicker">
+                    PUBLIC PORTFOLIO
+                </span>
+
+                <h2>
+                    Share your portfolio
+                </h2>
+
+                <p>
+                    {% if portfolio.published %}
+                        Your portfolio is live. Share this link
+                        with recruiters, clients or friends.
+                    {% else %}
+                        Publish your portfolio to create a public
+                        profile that others can view.
+                    {% endif %}
+                </p>
+
+            </div>
+
+
+            {% if portfolio.published %}
+
+                <div class="public-link-box">
+
+                    <input
+                        type="text"
+                        id="publicLink"
+                        value="{{ url_for(
+                            'public_portfolio',
+                            portfolio_id=portfolio.id,
+                            _external=True
+                        ) }}"
+                        readonly
+                    >
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        onclick="copyPublicLink()">
+
+                        Copy Link
+
+                    </button>
+
+                </div>
+
+
+                <a
+                    href="{{ url_for(
+                        'public_portfolio',
+                        portfolio_id=portfolio.id
+                    ) }}"
+                    target="_blank"
+                    class="btn btn-primary">
+
+                    Open Public Portfolio
+
+                </a>
+
+            {% else %}
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'publish_portfolio',
+                        portfolio_id=portfolio.id
+                    ) }}">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+
+                        Publish Portfolio
+
+                    </button>
+
+                </form>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- =================================================
+             PUBLISH / UNPUBLISH
+             ================================================= -->
+
+        <section class="dashboard-card status-management">
+
+            <div>
+
+                <span class="section-kicker">
+                    VISIBILITY
+                </span>
+
+                <h2>
+                    Portfolio visibility
+                </h2>
+
+                <p>
+
+                    {% if portfolio.published %}
+
+                        Your portfolio is currently visible
+                        to anyone with the public link.
+
+                    {% else %}
+
+                        Your portfolio is currently private.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+
+            <div class="action-row">
+
+                {% if portfolio.published %}
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'unpublish_portfolio',
+                            portfolio_id=portfolio.id
+                        ) }}">
+
+                        <button
+                            type="submit"
+                            class="btn btn-secondary">
+
+                            Unpublish
+
+                        </button>
+
+                    </form>
+
+                {% else %}
+
+                    <form
+                        method="POST"
+                        action="{{ url_for(
+                            'publish_portfolio',
+                            portfolio_id=portfolio.id
+                        ) }}">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
+
+                            Publish
+
+                        </button>
+
+                    </form>
+
+                {% endif %}
+
+                <a
+                    href="{{ url_for('create') }}"
+                    class="btn btn-secondary">
+
+                    Edit Details
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             DANGER ZONE
+             ================================================= -->
+
+        <section class="danger-zone">
+
+            <div>
+
+                <span class="section-kicker">
+                    DANGER ZONE
+                </span>
+
+                <h2>
+                    Delete portfolio
+                </h2>
+
+                <p>
+                    This permanently removes your portfolio
+                    and its uploaded files.
+                </p>
+
+            </div>
+
+
+            <form
+                method="POST"
+                action="{{ url_for(
+                    'delete_portfolio',
+                    portfolio_id=portfolio.id
+                ) }}">
+
+                <button
+                    type="submit"
+                    class="btn btn-danger"
+                    onclick="return confirm(
+                        'Are you sure you want to delete your portfolio?'
+                    );">
+
+                    Delete Portfolio
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+        {% else %}
+
+
+        <!-- =================================================
+             EMPTY DASHBOARD
+             ================================================= -->
+
+        <section class="empty-dashboard">
+
+            <div class="empty-icon">
+                ✦
+            </div>
+
+            <span class="hero-badge">
+                Start building
+            </span>
+
+            <h2>
+                You don't have a portfolio yet.
+            </h2>
+
+            <p>
+                Create your first professional portfolio,
+                choose a design and publish it online.
+            </p>
+
+            <a
+                href="{{ url_for('create') }}"
+                class="btn btn-primary">
+
+                Create My Portfolio
+
+            </a>
+
+        </section>
+
+        {% endif %}
+
+
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer class="footer">
+
+    <div class="container footer-inner">
+
+        <div>
+
+            <a href="{{ url_for('index') }}"
+               class="brand">
+                Portfolify
+            </a>
+
+            <p>
+                Build. Publish. Share.
+            </p>
+
+        </div>
+
+        <small>
+            © 2026 Portfolify
+        </small>
+
+    </div>
+
+</footer>
+
+
+<!-- =====================================================
+     COPY LINK
+     ===================================================== -->
+
+<script>
+
+function copyPublicLink() {
+
+    const input =
+        document.getElementById("publicLink");
+
+    if (!input) {
+        return;
+    }
+
+    input.select();
+    input.setSelectionRange(0, 99999);
+
+    if (navigator.clipboard) {
+
+        navigator.clipboard
+            .writeText(input.value)
+            .then(function () {
+
+                alert("Portfolio link copied!");
+
+            });
+
+    } else {
+
+        document.execCommand("copy");
+
+        alert("Portfolio link copied!");
+
+    }
+
+}
+
+</script>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

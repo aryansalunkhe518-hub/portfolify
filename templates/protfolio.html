@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="{{ portfolio.name }} - {{ portfolio.title }}"
+    >
+
+    <meta
+        name="author"
+        content="{{ portfolio.name }}"
+    >
+
+    <meta
+        name="theme-color"
+        content="#6d28d9"
+    >
+
+    <title>
+        {{ portfolio.name }} | {{ portfolio.title }}
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='site44.css') }}">
+
+
+    <style>
+
+        /* =====================================================
+           PUBLIC PORTFOLIO
+           ===================================================== */
+
+        .public-page {
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(124, 58, 237, 0.12),
+                    transparent 35%
+                ),
+                #f8fafc;
+        }
+
+
+        .portfolio-nav {
+            background: rgba(255,255,255,0.88);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+
+        .portfolio-nav-inner {
+            max-width: 1150px;
+            margin: auto;
+            padding: 16px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+
+        .portfolio-brand {
+            font-size: 22px;
+            font-weight: 900;
+            color: #6d28d9;
+            text-decoration: none;
+        }
+
+
+        .portfolio-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+
+        .portfolio-nav-links a {
+            text-decoration: none;
+            color: #475569;
+            font-weight: 700;
+            padding: 8px 12px;
+            border-radius: 10px;
+        }
+
+
+        .portfolio-nav-links a:hover {
+            background: #f1f5f9;
+            color: #6d28d9;
+        }
+
+
+        /* =====================================================
+           HERO
+           ===================================================== */
+
+        .portfolio-container {
+            max-width: 1050px;
+            margin: auto;
+            padding: 55px 22px 80px;
+        }
+
+
+        .portfolio-hero {
+            background: white;
+            border-radius: 28px;
+            padding: 55px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 20px 60px rgba(15,23,42,0.08);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        .portfolio-hero::before {
+            content: "";
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(124,58,237,0.10);
+            top: -150px;
+            right: -100px;
+        }
+
+
+        .portfolio-hero::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: rgba(236,72,153,0.08);
+            bottom: -130px;
+            left: -80px;
+        }
+
+
+        .portfolio-content {
+            position: relative;
+            z-index: 2;
+        }
+
+
+        /* =====================================================
+           PHOTO
+           ===================================================== */
+
+        .portfolio-photo {
+            width: 145px;
+            height: 145px;
+            margin: 0 auto 22px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c3aed,
+                    #ec4899
+                );
+            color: white;
+            font-size: 55px;
+            font-weight: 900;
+            border: 6px solid white;
+            box-shadow: 0 15px 35px rgba(124,58,237,0.25);
+        }
+
+
+        .portfolio-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+        .photo-rounded {
+            border-radius: 28px;
+        }
+
+
+        .photo-square {
+            border-radius: 12px;
+        }
+
+
+        .portfolio-hero h1 {
+            font-size: clamp(36px, 6vw, 62px);
+            line-height: 1.05;
+            margin: 0;
+            color: #0f172a;
+            letter-spacing: -2px;
+        }
+
+
+        .portfolio-title {
+            margin: 15px 0 0;
+            font-size: 20px;
+            color: #6d28d9;
+            font-weight: 800;
+        }
+
+
+        .portfolio-about {
+            max-width: 700px;
+            margin: 22px auto 0;
+            color: #64748b;
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+
+        /* =====================================================
+           SOCIAL BUTTONS
+           ===================================================== */
+
+        .portfolio-actions {
+            margin-top: 28px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+
+        .portfolio-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 800;
+            transition: 0.2s ease;
+        }
+
+
+        .portfolio-btn.primary {
+            color: white;
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c3aed,
+                    #ec4899
+                );
+        }
+
+
+        .portfolio-btn.secondary {
+            color: #334155;
+            background: #f1f5f9;
+        }
+
+
+        .portfolio-btn:hover {
+            transform: translateY(-2px);
+        }
+
+
+        /* =====================================================
+           SECTION
+           ===================================================== */
+
+        .portfolio-section {
+            margin-top: 28px;
+            background: white;
+            padding: 38px;
+            border-radius: 24px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 30px rgba(15,23,42,0.05);
+        }
+
+
+        .section-label {
+            color: #7c3aed;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 7px;
+        }
+
+
+        .portfolio-section h2 {
+            margin: 0 0 18px;
+            font-size: 28px;
+            color: #0f172a;
+        }
+
+
+        .section-text {
+            color: #64748b;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+
+        /* =====================================================
+           SKILLS
+           ===================================================== */
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+
+        .skill {
+            padding: 9px 14px;
+            border-radius: 999px;
+            background: #f3e8ff;
+            color: #6d28d9;
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           PROJECT / EDUCATION / EXPERIENCE
+           ===================================================== */
+
+        .content-box {
+            padding: 20px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            color: #475569;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+
+        /* =====================================================
+           CONTACT
+           ===================================================== */
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+
+        .contact-card {
+            padding: 18px;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            text-decoration: none;
+            color: #334155;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+
+        .contact-card strong {
+            display: block;
+            color: #7c3aed;
+            margin-bottom: 5px;
+        }
+
+
+        /* =====================================================
+           TEMPLATE VARIATIONS
+           ===================================================== */
+
+        .template-modern .portfolio-hero {
+            border-radius: 18px;
+        }
+
+
+        .template-minimal .portfolio-hero,
+        .template-minimal .portfolio-section {
+            box-shadow: none;
+            border-color: #e2e8f0;
+        }
+
+
+        .template-developer {
+            background: #0b1020;
+            color: #e2e8f0;
+        }
+
+
+        .template-developer .portfolio-hero,
+        .template-developer .portfolio-section {
+            background: #111827;
+            border-color: #263244;
+        }
+
+
+        .template-developer .portfolio-hero h1,
+        .template-developer .portfolio-section h2 {
+            color: #f8fafc;
+        }
+
+
+        .template-developer .portfolio-about,
+        .template-developer .section-text,
+        .template-developer .content-box {
+            color: #94a3b8;
+        }
+
+
+        .template-developer .content-box,
+        .template-developer .contact-card {
+            background: #0f172a;
+            border-color: #263244;
+        }
+
+
+        .template-dark {
+            background: #050505;
+            color: #e5e7eb;
+        }
+
+
+        .template-dark .portfolio-hero,
+        .template-dark .portfolio-section {
+            background: #111111;
+            border-color: #292929;
+        }
+
+
+        .template-dark .portfolio-hero h1,
+        .template-dark .portfolio-section h2 {
+            color: #ffffff;
+        }
+
+
+        .template-dark .portfolio-about,
+        .template-dark .section-text {
+            color: #a1a1aa;
+        }
+
+
+        .template-creative .portfolio-hero {
+            background:
+                linear-gradient(
+                    135deg,
+                    #ffffff,
+                    #faf5ff,
+                    #fff1f2
+                );
+        }
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .portfolio-footer {
+            text-align: center;
+            padding: 35px 20px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .portfolio-nav-inner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+
+            .portfolio-container {
+                padding: 25px 14px 50px;
+            }
+
+
+            .portfolio-hero {
+                padding: 35px 20px;
+                border-radius: 20px;
+            }
+
+
+            .portfolio-section {
+                padding: 25px 20px;
+                border-radius: 18px;
+            }
+
+
+            .portfolio-photo {
+                width: 115px;
+                height: 115px;
+                font-size: 42px;
+            }
+
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .portfolio-nav-links {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="
+    public-page
+    template-{{ portfolio.template }}
+    theme-{{ portfolio.theme }}
+    font-{{ portfolio.font }}
+    photo-{{ portfolio.photo_style }}
+    decoration-{{ portfolio.decoration }}
+">
+
+
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+
+    <header class="portfolio-nav">
+
+        <div class="portfolio-nav-inner">
+
+            <a
+                href="{{ url_for('index') }}"
+                class="portfolio-brand">
+
+                Portfolify
+
+            </a>
+
+
+            <nav class="portfolio-nav-links">
+
+                <a href="#about">
+                    About
+                </a>
+
+                <a href="#skills">
+                    Skills
+                </a>
+
+                <a href="#projects">
+                    Projects
+                </a>
+
+                <a href="#contact">
+                    Contact
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         PORTFOLIO CONTENT
+         ===================================================== -->
+
+    <main class="portfolio-container">
+
+
+        <!-- =================================================
+             HERO
+             ================================================= -->
+
+        <section class="portfolio-hero">
+
+            <div class="portfolio-content">
+
+
+                <!-- PROFILE PHOTO -->
+
+                <div class="portfolio-photo">
+
+                    {% if portfolio.photo %}
+
+                        <img
+                            src="{{ url_for(
+                                'static',
+                                filename='uploads/' + portfolio.photo
+                            ) }}"
+                            alt="{{ portfolio.name }}"
+                        >
+
+                    {% else %}
+
+                        {{ portfolio.name[0]|upper }}
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- NAME -->
+
+                <h1>
+                    {{ portfolio.name }}
+                </h1>
+
+
+                <!-- TITLE -->
+
+                {% if portfolio.title %}
+
+                    <p class="portfolio-title">
+                        {{ portfolio.title }}
+                    </p>
+
+                {% endif %}
+
+
+                <!-- ABOUT -->
+
+                {% if portfolio.about %}
+
+                    <p class="portfolio-about">
+                        {{ portfolio.about }}
+                    </p>
+
+                {% endif %}
+
+
+                <!-- ACTIONS -->
+
+                <div class="portfolio-actions">
+
+
+                    {% if portfolio.email %}
+
+                        <a
+                            href="mailto:{{ portfolio.email }}"
+                            class="portfolio-btn primary">
+
+                            ✉ Contact Me
+
+                        </a>
+
+                    {% endif %}
+
+
+                    {% if portfolio.github %}
+
+                        <a
+                            href="{{ portfolio.github }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="portfolio-btn secondary">
+
+                            GitHub ↗
+
+                        </a>
+
+                    {% endif %}
+
+
+                    {% if portfolio.linkedin %}
+
+                        <a
+                            href="{{ portfolio.linkedin }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="portfolio-btn secondary">
+
+                            LinkedIn ↗
+
+                        </a>
+
+                    {% endif %}
+
+
+                    {% if portfolio.resume %}
+
+                        <a
+                            href="{{ url_for(
+                                'resume',
+                                portfolio_id=portfolio.id
+                            ) }}"
+                            target="_blank"
+                            class="portfolio-btn secondary">
+
+                            Download Resume
+
+                        </a>
+
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ABOUT
+             ================================================= -->
+
+        {% if portfolio.about %}
+
+        <section
+            class="portfolio-section"
+            id="about">
+
+            <div class="section-label">
+                About
+            </div>
+
+            <h2>
+                About Me
+            </h2>
+
+            <div class="section-text">
+                {{ portfolio.about }}
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             SKILLS
+             ================================================= -->
+
+        {% if portfolio.skills %}
+
+        <section
+            class="portfolio-section"
+            id="skills">
+
+            <div class="section-label">
+                Skills
+            </div>
+
+            <h2>
+                What I Work With
+            </h2>
+
+
+            <div class="skills-list">
+
+                {% for skill in portfolio.skills.split(',') %}
+
+                    {% if skill.strip() %}
+
+                        <span class="skill">
+                            {{ skill.strip() }}
+                        </span>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             PROJECTS
+             ================================================= -->
+
+        {% if portfolio.projects %}
+
+        <section
+            class="portfolio-section"
+            id="projects">
+
+            <div class="section-label">
+                Work
+            </div>
+
+            <h2>
+                Projects
+            </h2>
+
+            <div class="content-box">
+                {{ portfolio.projects }}
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             EDUCATION
+             ================================================= -->
+
+        {% if portfolio.education %}
+
+        <section class="portfolio-section">
+
+            <div class="section-label">
+                Education
+            </div>
+
+            <h2>
+                Education
+            </h2>
+
+            <div class="content-box">
+                {{ portfolio.education }}
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             EXPERIENCE
+             ================================================= -->
+
+        {% if portfolio.experience %}
+
+        <section class="portfolio-section">
+
+            <div class="section-label">
+                Experience
+            </div>
+
+            <h2>
+                Experience
+            </h2>
+
+            <div class="content-box">
+                {{ portfolio.experience }}
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             CONTACT
+             ================================================= -->
+
+        {% if portfolio.email or portfolio.github or portfolio.linkedin %}
+
+        <section
+            class="portfolio-section"
+            id="contact">
+
+            <div class="section-label">
+                Contact
+            </div>
+
+            <h2>
+                Let's Connect
+            </h2>
+
+
+            <div class="contact-grid">
+
+
+                {% if portfolio.email %}
+
+                <a
+                    href="mailto:{{ portfolio.email }}"
+                    class="contact-card">
+
+                    <strong>
+                        Email
+                    </strong>
+
+                    {{ portfolio.email }}
+
+                </a>
+
+                {% endif %}
+
+
+                {% if portfolio.github %}
+
+                <a
+                    href="{{ portfolio.github }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="contact-card">
+
+                    <strong>
+                        GitHub
+                    </strong>
+
+                    View GitHub Profile
+
+                </a>
+
+                {% endif %}
+
+
+                {% if portfolio.linkedin %}
+
+                <a
+                    href="{{ portfolio.linkedin }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="contact-card">
+
+                    <strong>
+                        LinkedIn
+                    </strong>
+
+                    View LinkedIn Profile
+
+                </a>
+
+                {% endif %}
+
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="portfolio-footer">
+
+        <p>
+            Created with
+            <strong>Portfolify</strong>
+        </p>
+
+    </footer>
+
+
+</div>
+
+
+<script
+    src="{{ url_for('static', filename='script.js') }}">
+</script>
+
+</body>
+
+</html>

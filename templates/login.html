@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Login to your Portfolify account.">
+
+    <meta name="theme-color"
+          content="#6d28d9">
+
+    <title>Login - Portfolify</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='site44.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+     ===================================================== -->
+
+<header class="navbar">
+
+    <div class="container navbar-inner">
+
+        <a href="{{ url_for('index') }}"
+           class="brand">
+            Portfolify
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="{{ url_for('index') }}">
+                Home
+            </a>
+
+            <a href="{{ url_for('signup') }}">
+                Create Account
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     LOGIN PAGE
+     ===================================================== -->
+
+<main class="auth-page">
+
+    <div class="auth-container">
+
+
+        <!-- =================================================
+             LOGIN FORM
+             ================================================= -->
+
+        <section class="auth-form">
+
+            <h1>
+                Welcome back
+            </h1>
+
+            <p>
+                Log in to manage your portfolio.
+            </p>
+
+
+            <!-- FLASH MESSAGES -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+
+                {% if messages %}
+
+                    {% for category, message in messages %}
+
+                        <div class="flash {{ category }}">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            <form method="POST"
+                  action="{{ url_for('login') }}">
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- REMEMBER -->
+
+                <div class="checkbox-row">
+
+                    <input
+                        type="checkbox"
+                        id="remember"
+                        name="remember"
+                    >
+
+                    <label for="remember">
+                        Keep me signed in
+                    </label>
+
+                </div>
+
+
+                <!-- LOGIN BUTTON -->
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    style="width:100%;">
+                    Login to Portfolify
+                </button>
+
+            </form>
+
+
+            <!-- SIGNUP -->
+
+            <p class="text-center mt-2">
+
+                Don't have an account?
+
+                <a
+                    href="{{ url_for('signup') }}"
+                    style="color:#6d28d9;font-weight:700;">
+                    Create one
+                </a>
+
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             SIDE PANEL
+             ================================================= -->
+
+        <aside class="auth-side">
+
+            <div>
+
+                <div class="hero-badge"
+                     style="background:rgba(255,255,255,0.14);
+                            color:white;">
+                    ✦ Your portfolio is waiting
+                </div>
+
+                <h2>
+                    Your skills deserve a place online.
+                </h2>
+
+                <p>
+                    Continue building your professional
+                    identity and share your work with the world.
+                </p>
+
+
+                <ul>
+
+                    <li>
+                        ✓ Manage your portfolio
+                    </li>
+
+                    <li>
+                        ✓ Update projects and skills
+                    </li>
+
+                    <li>
+                        ✓ Choose different templates
+                    </li>
+
+                    <li>
+                        ✓ Publish your portfolio
+                    </li>
+
+                    <li>
+                        ✓ Share your unique link
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </aside>
+
+
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer class="footer">
+
+    <div class="container footer-inner">
+
+        <div>
+
+            <a href="{{ url_for('index') }}"
+               class="brand">
+                Portfolify
+            </a>
+
+            <p>
+                Build. Publish. Share.
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <small>
+                © 2026 Portfolify
+            </small>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
